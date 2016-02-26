@@ -14,9 +14,10 @@ public class Animation {
 	private int width;
 	private int height;
 	private double opacity;
+	private int index;
 	
 	public Animation(String name, String src, int frames, int frequency, int x, int y, int width, int height,
-			double opacity) {
+			double opacity, int index) {
 		super();
 		this.name = name;
 		this.src = src;
@@ -27,6 +28,7 @@ public class Animation {
 		this.width = width;
 		this.height = height;
 		this.opacity = opacity;
+		this.index = index;
 	}
 
 	public String getName() {
@@ -101,7 +103,15 @@ public class Animation {
 		this.opacity = opacity;
 	}
 
-	public static Animation fromNode(Element node) throws NoventParsingException {
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public static Animation fromNode(Element node, int index) throws NoventParsingException {
 		String name = ParsingUtil.validateNonEmptyStringAttr(node, "name");
 		String src = ParsingUtil.validateSrc(node, "src");
 		int frames = ParsingUtil.validatePositiveIntegerAttr(node, "frames");
@@ -113,6 +123,6 @@ public class Animation {
 		double opacity = ParsingUtil.validateBetweenZeroAndOneAttr(node, "opacity");
 		
 		return new Animation(name, src, frames, frequency, x, y, width, height,
-				opacity);
+				opacity, index);
 	}
 }

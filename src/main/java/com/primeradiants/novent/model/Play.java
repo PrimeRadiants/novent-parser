@@ -47,7 +47,8 @@ public class Play extends EventElement {
 		List<EventElement> childElements = new ArrayList<EventElement>();
 		NodeList children = node.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++) {
-			childElements.add(EventElement.fromNode((Element) children.item(i)));
+			if(children.item(i) instanceof Element)
+				childElements.add(EventElement.fromNode((Element) children.item(i)));
 		}
 		
 		return new Play(childElements, target.getLeft(), target.getRight(), loop);

@@ -82,18 +82,18 @@ public class Wiggle extends EventElement {
 		double amplitude;
 		
 		if(property.valueType() == ParsingUtil.PropertyValueEnum.integer)
-			amplitude = ParsingUtil.validateIntegerAttr(node, "value");
+			amplitude = ParsingUtil.validateIntegerAttr(node, "amplitude");
 		else if(property.valueType() == ParsingUtil.PropertyValueEnum.positiveInteger)
-			amplitude = ParsingUtil.validatePositiveIntegerAttr(node, "value");
+			amplitude = ParsingUtil.validatePositiveIntegerAttr(node, "amplitude");
 		else if(property.valueType() == ParsingUtil.PropertyValueEnum.betweenZeroAndOne)
-			amplitude = ParsingUtil.validateBetweenZeroAndOneAttr(node, "value");
+			amplitude = ParsingUtil.validateBetweenZeroAndOneAttr(node, "amplitude");
 		else if(property.valueType() == ParsingUtil.PropertyValueEnum.real)
-			amplitude = ParsingUtil.validateRealAttr(node, "value");
+			amplitude = ParsingUtil.validateRealAttr(node, "amplitude");
 		else
-			amplitude = ParsingUtil.validatePositiveRealAttr(node, "value");
+			amplitude = ParsingUtil.validatePositiveRealAttr(node, "amplitude");
 		
 		int frequency = ParsingUtil.validateIntegerAttr(node, "frequency");
-		ParsingUtil.EaseEnum ease = ParsingUtil.validateEnumValue(node, "property", ParsingUtil.EaseEnum.class);
+		ParsingUtil.EaseEnum ease = ParsingUtil.validateEnumValue(node, "ease", ParsingUtil.EaseEnum.class);
 		
 		NodeList children = node.getChildNodes();
 		if(children.getLength() > 0)

@@ -47,7 +47,7 @@ public class Page {
 		
 		Materials materials = Materials.fromNode((Element) materialsList.item(0));
 		
-		NodeList eventsList = node.getElementsByTagName("materials");
+		NodeList eventsList = node.getElementsByTagName("events");
 		
 		if(eventsList.getLength() == 0)
 			throw new NoventParsingException("Invalid novent-descriptor: missing events tag for page " + name + " at line " + node.getUserData("lineNumber"));

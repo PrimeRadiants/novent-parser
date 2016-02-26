@@ -1,40 +1,75 @@
 package com.primeradiants;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import com.primeradiants.novent.exceptions.NoventParsingException;
+import com.primeradiants.novent.javascript.NoventToJavascript;
+import com.primeradiants.novent.model.Novent;
+import com.primeradiants.xml.PositionalXMLReader;
 
 public class Main 
 {
 	
 	private static Logger logger = new Logger();
 	
-    public static void main(String[] args) throws ParserConfigurationException, IOException
+    public static void main(String[] args) throws UnsupportedEncodingException
     {
         logger.info("Generating novent.js...");
         
         String path = getProgramPath();
-        File descriptor = new File(path + "\novent-descriptor.xml");
+        File folder = new File(path);
+        File descriptor = folder.toPath().resolve("novent-descriptor.xml").toFile();
+        if(!descriptor.exists() || descriptor.isDirectory()) {
+        	logger.error("Missing file novent-descriptor.xml");
+        	logger.error("BUILD FAILURE");
+        	return;
+        }
+        
         Document xmlDescriptor = parseXmlFile(descriptor);
         
         if(xmlDescriptor == null) {
         	logger.error("Unreadable xml file!");
-        	logger.error("Build failure.");
+        	logger.error("BUILD FAILURE");
         	return;
         }
         
+        try {
+        	logger.info("Parsing Novent models...");
+			Novent novent = Novent.fromNode((Element) xmlDescriptor.getElementsByTagName("novent").item(0));
+			logger.info("Converting models to Javascript...");
+			String script = NoventToJavascript.convert(novent);
+			
+			File result = folder.toPath().resolve("novent.js").toFile();
+			if(descriptor.exists() && descriptor.isFile()) {
+				result.delete();
+			}
+			
+			result.createNewFile();
+			FileUtils.writeStringToFile(result, script);
+			
+		} catch (NoventParsingException e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			logger.error("BUILD FAILURE");
+			return;
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			logger.error("BUILD FAILURE");
+		}
         
-        
-        logger.info("Build success.");
+        logger.info("BUILD SUCCESS");
     } 
     
     public static String getProgramPath() throws UnsupportedEncodingException {
@@ -45,16 +80,20 @@ public class Main
     }
     
     public static Document parseXmlFile(File file) {
-    	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-    	DocumentBuilder dBuilder;
-		try {
-			dBuilder = dbFactory.newDocumentBuilder();
-			return dBuilder.parse(file);
-		} catch (ParserConfigurationException e) {
-			return null;
-		} catch (SAXException e) {
+    	try {
+			InputStream is = new FileInputStream(file);
+			Document doc = PositionalXMLReader.readXML(is);
+			is.close();
+			
+			return doc;
+		} catch (FileNotFoundException e) {
+			logger.error(e.getMessage());
 			return null;
 		} catch (IOException e) {
+			logger.error(e.getMessage());
+			return null;
+		} catch (SAXException e) {
+			logger.error(e.getMessage());
 			return null;
 		}
     }

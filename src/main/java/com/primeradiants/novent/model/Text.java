@@ -16,9 +16,10 @@ public class Text {
 	private String size;
 	private double opacity;
 	private String content;
+	private int index;
 	
 	public Text(String name, int x, int y, int width, AlignEnum align, int lineHeight, String font, String size,
-			double opacity, String content) {
+			double opacity, String content, int index) {
 		super();
 		this.name = name;
 		this.x = x;
@@ -30,6 +31,7 @@ public class Text {
 		this.size = size;
 		this.opacity = opacity;
 		this.content = content;
+		this.index = index;
 	}
 
 	public String getName() {
@@ -112,7 +114,15 @@ public class Text {
 		this.content = content;
 	}
 
-	public static Text fromNode(Element node) throws NoventParsingException {
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public static Text fromNode(Element node, int index) throws NoventParsingException {
 		String name = ParsingUtil.validateNonEmptyStringAttr(node, "name");
 		int x = ParsingUtil.validateIntegerAttr(node, "x");
 		int y = ParsingUtil.validateIntegerAttr(node, "y");
@@ -129,6 +139,6 @@ public class Text {
 		}
 		
 		return new Text(name, x, y, width, align, lineHeight, font, size,
-				opacity, content);
+				opacity, content, index);
 	}
 }

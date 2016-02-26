@@ -67,45 +67,33 @@ public class Materials {
 	
 	
 	public static Materials fromNode(Element node) throws NoventParsingException {
-		NodeList animationsList = node.getElementsByTagName("animation");
-		NodeList fontsList = node.getElementsByTagName("font");
-		NodeList imagesList = node.getElementsByTagName("image");
-		NodeList soundsList = node.getElementsByTagName("sound");
-		NodeList textsList = node.getElementsByTagName("text");
-		NodeList videosList = node.getElementsByTagName("video");
+		NodeList materialList = node.getChildNodes();
 		
 		List<Animation> animations = new ArrayList<Animation>();
 		List<Image> images = new ArrayList<Image>();
 		List<Font> fonts = new ArrayList<Font>();
 		List<Sound> sounds = new ArrayList<Sound>();
-		List<Text> text = new ArrayList<Text>();
+		List<Text> texts = new ArrayList<Text>();
 		List<Video> videos = new ArrayList<Video>();
 		
-		for(int i = 0; i < animationsList.getLength(); i++) {
-			animations.add(Animation.fromNode((Element) animationsList.item(i)));
-		}
-		
-		for(int i = 0; i < fontsList.getLength(); i++) {
-			fonts.add(Font.fromNode((Element) fontsList.item(i)));
-		}
-		
-		for(int i = 0; i < imagesList.getLength(); i++) {
-			images.add(Image.fromNode((Element) imagesList.item(i)));
-		}
-		
-		for(int i = 0; i < soundsList.getLength(); i++) {
-			sounds.add(Sound.fromNode((Element) soundsList.item(i)));
-		}
-		
-		for(int i = 0; i < textsList.getLength(); i++) {
-			sounds.add(Sound.fromNode((Element) textsList.item(i)));
-		}
-		
-		for(int i = 0; i < videosList.getLength(); i++) {
-			videos.add(Video.fromNode((Element) videosList.item(i)));
+		for(int i = 0; i < materialList.getLength(); i++) {
+			if(materialList.item(i).getNodeName().equals("animation"))
+				animations.add(Animation.fromNode((Element) materialList.item(i), i));
+			else if(materialList.item(i).getNodeName().equals("font"))
+				fonts.add(Font.fromNode((Element) materialList.item(i)));
+			else if(materialList.item(i).getNodeName().equals("image"))
+				images.add(Image.fromNode((Element) materialList.item(i), i));
+			else if(materialList.item(i).getNodeName().equals("sound"))
+				sounds.add(Sound.fromNode((Element) materialList.item(i)));
+			else if(materialList.item(i).getNodeName().equals("text"))
+				texts.add(Text.fromNode((Element) materialList.item(i), i));
+			else if(materialList.item(i).getNodeName().equals("video"))
+				videos.add(Video.fromNode((Element) materialList.item(i), i));
+			else
+				throw new NoventParsingException("Invalid material tag: unsupported tag: " + node.getTagName() + " at line " + node.getUserData("lineNumber"));
 		}
 		
 		return new Materials(images, fonts, animations, sounds,
-				text, videos);
+				texts, videos);
 	}
 }

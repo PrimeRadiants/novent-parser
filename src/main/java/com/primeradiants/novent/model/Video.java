@@ -12,7 +12,9 @@ public class Video {
 	private int width;
 	private int height;
 	private double opacity;
-	public Video(String name, String src, int x, int y, int width, int height, double opacity) {
+	private int index;
+	
+	public Video(String name, String src, int x, int y, int width, int height, double opacity, int index) {
 		super();
 		this.name = name;
 		this.src = src;
@@ -21,6 +23,7 @@ public class Video {
 		this.width = width;
 		this.height = height;
 		this.opacity = opacity;
+		this.index = index;
 	}
 	public String getName() {
 		return name;
@@ -64,15 +67,21 @@ public class Video {
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
 	}
-	public static Video fromNode(Element node) throws NoventParsingException {
+	public int getIndex() {
+		return index;
+	}
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	public static Video fromNode(Element node, int index) throws NoventParsingException {
 		String name = ParsingUtil.validateNonEmptyStringAttr(node, "name");
 		String src = ParsingUtil.validateSrc(node, "src");
 		int x = ParsingUtil.validateIntegerAttr(node, "x");
 		int y = ParsingUtil.validateIntegerAttr(node, "y");
 		int width = ParsingUtil.validatePositiveIntegerAttr(node, "width");
-		int height = ParsingUtil.validatePositiveIntegerAttr(node, "frames");
+		int height = ParsingUtil.validatePositiveIntegerAttr(node, "height");
 		double opacity = ParsingUtil.validateBetweenZeroAndOneAttr(node, "opacity");
 		
-		return new Video(name, src, x, y, width, height, opacity);
+		return new Video(name, src, x, y, width, height, opacity, index);
 	}
 }

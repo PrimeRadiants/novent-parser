@@ -84,12 +84,13 @@ public class Animate extends EventElement {
 			value = ParsingUtil.validatePositiveRealAttr(node, "value");
 		
 		int duration = ParsingUtil.validatePositiveIntegerAttr(node, "duration");
-		ParsingUtil.EaseEnum ease = ParsingUtil.validateEnumValue(node, "property", ParsingUtil.EaseEnum.class);
+		ParsingUtil.EaseEnum ease = ParsingUtil.validateEnumValue(node, "ease", ParsingUtil.EaseEnum.class);
 		
 		List<EventElement> childElements = new ArrayList<EventElement>();
 		NodeList children = node.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++) {
-			childElements.add(EventElement.fromNode((Element) children.item(i)));
+			if(children.item(i) instanceof Element)
+				childElements.add(EventElement.fromNode((Element) children.item(i)));
 		}
 		
 		return new Animate(childElements, target.getLeft(), target.getRight(), property, value, duration, ease);
