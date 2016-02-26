@@ -74,7 +74,7 @@ public class ParsingUtil {
 	public static double validateBetweenZeroAndOneAttr(Element node, String attrName) throws NoventParsingException {
 		double result = validateRealAttr(node, attrName);
 		
-		if(result <= 0 || result >= 1)
+		if(result < 0 || result > 1)
 			throw new NoventParsingException("Invalid number value for " + attrName + " at tag " + node.getTagName() + " at line " + node.getUserData("lineNumber") + ", must be between 0 and 1");
 		
 		return result;

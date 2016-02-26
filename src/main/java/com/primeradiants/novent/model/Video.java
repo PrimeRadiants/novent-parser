@@ -70,7 +70,7 @@ public class Video {
 		int x = ParsingUtil.validateIntegerAttr(node, "x");
 		int y = ParsingUtil.validateIntegerAttr(node, "y");
 		int width = ParsingUtil.validatePositiveIntegerAttr(node, "width");
-		int height = ParsingUtil.validatePositiveIntegerAttr(node, "frames");
+		int height = ParsingUtil.validatePositiveIntegerAttr(node, "height");
 		double opacity = ParsingUtil.validateBetweenZeroAndOneAttr(node, "opacity");
 		
 		return new Video(name, src, x, y, width, height, opacity);

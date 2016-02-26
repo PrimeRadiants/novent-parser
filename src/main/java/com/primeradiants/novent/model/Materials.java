@@ -78,7 +78,7 @@ public class Materials {
 		List<Image> images = new ArrayList<Image>();
 		List<Font> fonts = new ArrayList<Font>();
 		List<Sound> sounds = new ArrayList<Sound>();
-		List<Text> text = new ArrayList<Text>();
+		List<Text> texts = new ArrayList<Text>();
 		List<Video> videos = new ArrayList<Video>();
 		
 		for(int i = 0; i < animationsList.getLength(); i++) {
@@ -98,7 +98,7 @@ public class Materials {
 		}
 		
 		for(int i = 0; i < textsList.getLength(); i++) {
-			sounds.add(Sound.fromNode((Element) textsList.item(i)));
+			texts.add(Text.fromNode((Element) textsList.item(i)));
 		}
 		
 		for(int i = 0; i < videosList.getLength(); i++) {
@@ -106,6 +106,6 @@ public class Materials {
 		}
 		
 		return new Materials(images, fonts, animations, sounds,
-				text, videos);
+				texts, videos);
 	}
 }

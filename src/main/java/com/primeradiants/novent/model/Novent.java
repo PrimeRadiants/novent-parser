@@ -45,7 +45,7 @@ public class Novent {
 		
 		Button button = Button.fromNode((Element) buttons.item(0));
 		
-		NodeList pages = node.getElementsByTagName("button");
+		NodeList pages = node.getElementsByTagName("page");
 		if(pages.getLength() == 0)
 			throw new NoventParsingException("Invalid novent-descriptor: no page tag.");
 		
