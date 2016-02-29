@@ -10,6 +10,7 @@ import com.primeradiants.novent.model.EventElement;
 import com.primeradiants.novent.model.Novent;
 import com.primeradiants.novent.model.Page;
 import com.primeradiants.novent.model.ParsingUtil.LoopTypeEnum;
+import com.primeradiants.novent.model.ParsingUtil.PropertyEnum;
 import com.primeradiants.novent.model.ParsingUtil.TargetEnum;
 import com.primeradiants.novent.model.Play;
 import com.primeradiants.novent.model.Stop;
@@ -94,10 +95,19 @@ public class NoventToJavascript {
 	}
 
 	private static String animateToJavascript(Animate element) {
-		String result = "canvas.Timeline.new(readyObj.materials." + element.getTargetType().toString() + "s." + element.getTarget() + ").to({" + element.getProperty().toString() + ":" + element.getValue() + "}, " + element.getDuration() + ", Ease." + element.getEase().toString() + ").call(";
-		
-		if(!element.getChildElements().isEmpty())
-			result += "function() {" + eventToJavascript(element.getChildElements()) + "}";
+		String result = "";
+		if(element.getTargetType() != TargetEnum.sound) {
+			result = "canvas.Timeline.new(readyObj.materials." + element.getTargetType().toString() + "s." + element.getTarget() + ").to({" + element.getProperty().toString() + ":" + element.getValue() + "}, " + element.getDuration() + ", Ease." + element.getEase().toString() + ").call(";
+			
+			if(!element.getChildElements().isEmpty())
+				result += "function() {" + eventToJavascript(element.getChildElements()) + "}";
+		}
+		else if(element.getProperty() == PropertyEnum.volume) {
+			result = "canvas.Sound.fadeTo('" + element.getTarget() + "', " + element.getDuration() + ", " + element.getValue() + "";
+			
+			if(!element.getChildElements().isEmpty())
+				result += ", function() {" + eventToJavascript(element.getChildElements()) + "}";
+		}
 		
 		result += ");";
 		return result;

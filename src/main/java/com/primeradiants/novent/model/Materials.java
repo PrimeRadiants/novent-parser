@@ -89,8 +89,8 @@ public class Materials {
 				texts.add(Text.fromNode((Element) materialList.item(i), i));
 			else if(materialList.item(i).getNodeName().equals("video"))
 				videos.add(Video.fromNode((Element) materialList.item(i), i));
-			else
-				throw new NoventParsingException("Invalid material tag: unsupported tag: " + node.getTagName() + " at line " + node.getUserData("lineNumber"));
+			/*else
+				throw new NoventParsingException("Invalid material tag: unsupported tag: " + node.getTagName() + " at line " + node.getUserData("lineNumber"));*/
 		}
 		
 		return new Materials(images, fonts, animations, sounds,

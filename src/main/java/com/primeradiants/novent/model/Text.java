@@ -16,10 +16,11 @@ public class Text {
 	private String size;
 	private double opacity;
 	private String content;
+	private String color;
 	private int index;
 	
 	public Text(String name, int x, int y, int width, AlignEnum align, int lineHeight, String font, String size,
-			double opacity, String content, int index) {
+			double opacity, String content, String color, int index) {
 		super();
 		this.name = name;
 		this.x = x;
@@ -31,6 +32,7 @@ public class Text {
 		this.size = size;
 		this.opacity = opacity;
 		this.content = content;
+		this.color = color;
 		this.index = index;
 	}
 
@@ -122,6 +124,14 @@ public class Text {
 		this.index = index;
 	}
 
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
 	public static Text fromNode(Element node, int index) throws NoventParsingException {
 		String name = ParsingUtil.validateNonEmptyStringAttr(node, "name");
 		int x = ParsingUtil.validateIntegerAttr(node, "x");
@@ -131,6 +141,7 @@ public class Text {
 		int lineHeight = ParsingUtil.validatePositiveIntegerAttr(node, "lineHeight");
 		String font = ParsingUtil.validateNonEmptyStringAttr(node, "font");
 		String size = ParsingUtil.validateNonEmptyStringAttr(node, "size");
+		String color = ParsingUtil.validateNonEmptyStringAttr(node, "color");
 		double opacity = ParsingUtil.validateBetweenZeroAndOneAttr(node, "opacity");
 		
 		String content = node.getTextContent();
@@ -139,6 +150,6 @@ public class Text {
 		}
 		
 		return new Text(name, x, y, width, align, lineHeight, font, size,
-				opacity, content, index);
+				opacity, content, color, index);
 	}
 }
